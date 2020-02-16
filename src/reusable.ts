@@ -71,5 +71,12 @@ export class Container {
 }
 export const createContainer = () => new Container();
 let defaultContainer = new Container();
-export const getContainer = () => defaultContainer;
+const containers: any = {};
+export const getContainer = (containerName: string = 'default') => {
+    if(containers[containerName]){
+        return containers[containerName];
+    }
+    containers[containerName] = new Container();
+    return containers[containerName]
+};
 export const replaceContainer = (mockedContainer: Container) => defaultContainer = mockedContainer;

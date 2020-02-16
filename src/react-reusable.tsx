@@ -5,8 +5,8 @@ import { Container, getContainer, Store as StoreClass, HookFn } from './reusable
 
 const ReusableContext = React.createContext<Container | null>(null);
 
-export const ReusableProvider: FunctionComponent<{}> = ({ children }) => (
-  <ReusableContext.Provider value={getContainer()}>
+export const ReusableProvider: FunctionComponent<{containerName?: string}> = ({ children, containerName = 'default' }) => (
+  <ReusableContext.Provider value={getContainer(containerName)}>
     <React.Fragment>
       <Stores />
       {children}
@@ -93,8 +93,8 @@ function useStore<HookValue, SelectorValue>(
   return localCopy;
 }
 
-export function createStore<HookValue>(fn: HookFn<HookValue>) {
-  const store = getContainer().createStore(fn);
+export function createStore<HookValue>(fn: HookFn<HookValue>, containerName = 'default') {
+  const store = getContainer(containerName).createStore(fn);
 
   // overload return function:
   function useStoreHook(): HookValue;
